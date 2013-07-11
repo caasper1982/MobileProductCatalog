@@ -37,104 +37,46 @@
   </head>
 
 <body>
+	<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://routed.ch/mydb" user="bwi" password="test33test" />
+	<sql:query dataSource="${snapshot}" var="result">SELECT * FROM productlist;</sql:query>
+	
 	<div class="container-fluid">
 		<div class="hero-unit">
 			<h1>Mobile-Product-Catalog</h1>
 			<p>Willkommen auf unserer Webseite MobileProductCatalog. Hier
 				kannst du dir zu fairen Preisen echt geile Produkte erweben...</p>
+			<a class="btn" href="log.jsp" />zeige Log für alle Produkte &raquo;</a>
 		</div>
 		<div class="row-fluid">
-			<div class="span3">
-				<h2>1</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">edit details &raquo;</a>
-				</p>
-			</div>
-			<div class="span3">
-				<h2>2</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">edit details &raquo;</a>
-				</p>
-			</div>
-			<div class="span3">
-				<h2>3</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">edit details &raquo;</a>
-				</p>
-			</div>
-			<div class="span3">
-				<h2>4</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">mehr details &raquo;</a>
-				</p>
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span3">
-				<h2>5</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">mehr details &raquo;</a>
-				</p>
-			</div>
-			<div class="span3">
-				<h2>6</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">edit details &raquo;</a>
-				</p>
-			</div>
-			<div class="span3">
-				<h2>7</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">edit details &raquo;</a>
-				</p>
-
-			</div>
-			<div class="span3">
-				<h2>8</h2>
-				<p>Produktenummer:</p>
-				<p>Produktname:</p>
-				<p>Beschreibung:</p>
-				<p>Preis:</p>
-				<p>
-					<a class="btn" href="edit.jsp?pid=1">edit details &raquo;</a>
-				</p>
-			</div>
+	
+			<% int cnt = 0; %>
+			<c:forEach var="row" items="${result.rows}">
+				<% 
+				if(cnt % 4 == 0 && cnt > 0) {
+					%></div>
+					<div class="row-fluid"><%
+				}
+				%>
+				<div class="span3">
+					<h2>${row.Prod_ID}</h2>
+					<p><c:out value="${row.Prod_Name}" /></p>
+					<p><c:out value="${row.Prod_Desc}" /></p>
+					<p><c:out value="${row.Prod_Price}" /></p>
+					<p>
+						<a class="btn" href="log.jsp?pid=<c:out value="${row.Prod_ID}" />">zeige Log &raquo;</a>
+					</p>
+				</div>
+				<% cnt++; %>
+			</c:forEach>
 		</div>
 		<hr>
+		<hr/>
 		<footer>
 			<p>&copy; HWZ: N-Tier Technolgies 2013</p>
 		</footer>
 	</div>
 	<!-- Le javascript
-    ================================================== -->
+	   ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="../assets/js/jquery.js"></script>
 	<script src="../assets/js/bootstrap-transition.js"></script>

@@ -37,41 +37,24 @@
   </head>
 
 <body>
+	<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://routed.ch/mydb" user="bwi" password="test33test" />
+	<sql:query dataSource="${snapshot}" var="result">SELECT * FROM log<%=(request.getParameter("pid") != null ? " WHERE FK_Prod_ID = " + request.getParameter("pid") : "") %>;</sql:query>
 	<div class="container-fluid">
 		<div class="hero-unit">
 			<h1>Mobile-Product-Catalog</h1>
-			<p>Produkt 1 editieren</p>
+			<p>Produkt <%=(request.getParameter("pid") != null ? request.getParameter("pid") : "") %> - Log</p>
+			<a class="btn" href="index.jsp" />zurück</a>
 		</div>
 		<div class="row-fluid">
-			<div class="span12">
-				<h2>Produkt 1</h2>
-				<form class="form-horizontal" target="#someServlet.java">
-				  <div class="control-group">
-				    <label class="control-label" for="pname">Name</label>
-				    <div class="controls">
-				      <input type="text" id="pname" placeholder="Name">
-				    </div>
-				  </div>
-				  <div class="control-group">
-				    <label class="control-label" for="pbeschrieb">Beschrieb</label>
-				    <div class="controls">
-				      <input type="text" id="pbeschrieb" placeholder="Beschrieb">
-				    </div>
-				  </div>
-				  <div class="control-group">
-				    <label class="control-label" for="ppreis">Preis</label>
-				    <div class="controls">
-				      <input type="text" id="ppreis" placeholder="Preis">
-				    </div>
-				  </div>
-				  <div class="control-group">
-				    <div class="controls">
-				    	<a href="index.jsp" class="btn">Zurück</a>
-				      	<button type="submit" class="btn">Speichern</button>
-				    </div>
-				  </div>
-				</form>
-			</div>
+			<c:forEach var="row" items="${result.rows}">
+				<div class="span12" style="margin-left:0;border-bottom:1px solid #333;">
+					<h3>Produkt ${row.FK_Prod_ID}</h3>
+					<p><strong>${row.Log_Timestamp}</strong>: ${row.Log_Action}</p>
+				</div>
+			</c:forEach>
+			<c:if test="${empty result.rows}">
+			    Kein Log für dieses Produkt vorhanden.
+			</c:if>
 		</div>
 		<hr>
 		<footer>
